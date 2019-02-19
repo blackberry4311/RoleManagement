@@ -15,7 +15,7 @@ public class RoleManagement {
 
 	public RoleManagement() {
 		data = new LinkedHashMap<>();
-		numOfUsers = -1;
+		numOfUsers = -1000;
 	}
 
 	public List<List<String>> processOutput() {
@@ -50,8 +50,9 @@ public class RoleManagement {
 	public static void main(String... args) {
 		RoleManagement r = new RoleManagement();
 		Scanner sc = new Scanner(System.in);
-		int count = -2;// for position of user
-		boolean inputManager = false;
+		int countUser = 0;// for position of user
+		int countManager = 0;
+		boolean endInput = false;
 		while (true) {
 			String input = sc.nextLine();
 
@@ -60,28 +61,28 @@ public class RoleManagement {
 				break;
 			}
 
-			if (input.equalsIgnoreCase("CEO")) inputManager = true;
+			if (endInput) {
+				System.out.println("type `output` to print result");
+				continue;
+			}
 
-			if (inputManager) { //input manager
-				count++;
-				r.data.get("User" + count).setManagedBy(input.equalsIgnoreCase("CEO") ? input : "User" + input);
-				if (count == r.numOfUsers) {
+			if (countUser - 1 == r.numOfUsers) { //input manager
+				countManager++;
+				r.data.get("User" + countManager).setManagedBy(input.equalsIgnoreCase("CEO") ? input : "User" + input);
+				if (countManager == r.numOfUsers) {
+					endInput = true;
 					System.out.println("end input");
 				}
 			} else {
-				count++;
 				if (r.numOfUsers < 0) {
 					r.numOfUsers = Integer.parseInt(input);
 				} else {
-					User user = new User(); //user CEO
+					User user = new User();
 					user.setPermissions(input);
-					String name = count == 0 ? "CEO" : "User" + count;
+					String name = countUser == 0 ? "CEO" : "User" + countUser;
 					user.setName(name);
 					r.data.put(name, user);
-				}
-
-				if (r.data.size() - 1 == r.numOfUsers) {
-					count = 0;
+					countUser++;
 				}
 			}
 		}
