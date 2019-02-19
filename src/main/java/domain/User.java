@@ -1,18 +1,31 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class User {
-	private String manager;
+	private String managedBy;
+	private String name;
 	private List<String> permissions;
 
-	public String getManager() {
-		return manager;
+	public User() {
+		super();
+		permissions = new ArrayList<>();
 	}
 
-	public void setManager(String manager) {
-		this.manager = manager;
+	public User(String managedBy, String name, List<String> permissions) {
+		this.managedBy = managedBy;
+		this.name = name;
+		this.permissions = permissions;
+	}
+
+	public String getManagedBy() {
+		return managedBy;
+	}
+
+	public void setManagedBy(String managedBy) {
+		this.managedBy = managedBy;
 	}
 
 	public List<String> getPermissions() {
@@ -24,7 +37,17 @@ public class User {
 	}
 
 	public void setPermissions(String permissions) {
-		String[] split = permissions.split(" ");
-		this.permissions = Arrays.asList(split);
+		if (permissions.length() > 0) {
+			String[] split = permissions.trim().split(" ");
+			this.permissions.addAll(Arrays.asList(split));
+		}
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
